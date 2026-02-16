@@ -1,0 +1,6 @@
+/* App-level resets — Vite boilerplate removed */
+#root {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
