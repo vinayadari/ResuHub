@@ -1,11 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+
+// Import routes
 const resumeRoutes = require('./routes/resumes');
 const aiRoutes = require('./routes/ai');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use((req, res, next) => {
@@ -31,6 +33,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/resumes', resumeRoutes);
 app.use('/api/ai', aiRoutes);
 
+// Root route
+app.get('/', (req, res) => {
+    res.json({
+        message: 'ResuHub Node.js API',
+        endpoints: {
+            health: '/api/health',
+            resumes: '/api/resumes',
+            ai: '/api/ai'
+        }
+    });
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -41,14 +55,6 @@ app.use((err, req, res, next) => {
     console.error('Unhandled error:', err);
     res.status(500).json({ error: err.message || 'Internal server error' });
 });
-
-// Only start server if not in serverless environment
-if (require.main === module) {
-    app.listen(PORT, () => {
-        console.log(`🚀 ResuHub API running on http://localhost:${PORT}`);
-        console.log(`   Supabase URL: ${process.env.SUPABASE_URL}`);
-    });
-}
 
 // Export for Vercel serverless
 module.exports = app;
