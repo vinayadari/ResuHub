@@ -30,6 +30,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/resumes', resumeRoutes);
 app.use('/api/ai', aiRoutes);
 
+// Root route
+app.get('/', (req, res) => {
+    res.json({
+        message: 'ResuHub Node.js API',
+        endpoints: {
+            health: '/api/health',
+            resumes: '/api/resumes',
+            ai: '/api/ai'
+        }
+    });
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
