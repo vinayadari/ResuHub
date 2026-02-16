@@ -1,8 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const resumeRoutes = require('../routes/resumes');
-const aiRoutes = require('../routes/ai');
+const path = require('path');
+
+// Import routes using absolute paths
+const resumeRoutes = require(path.join(__dirname, '..', 'routes', 'resumes'));
+const aiRoutes = require(path.join(__dirname, '..', 'routes', 'ai'));
 
 const app = express();
 
